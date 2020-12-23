@@ -2,6 +2,7 @@ const Joi = require('joi');
 
 const patientRegisterValidation = (data) => {
     const schema = Joi.object({
+        id: Joi.number().required(),
         name: Joi.string().min(6).required(),
         email: Joi.string().min(6).required().email(),
         password: Joi.string().min(6).required()
@@ -19,6 +20,7 @@ const patientLoginValidation = (data) => {
 
 const doctorRegisterValidation = (data) => {
     const schema = Joi.object({
+        id: Joi.number().required(),
         name: Joi.string().min(6).required(),
         email: Joi.string().min(6).required().email(),
         password: Joi.string().min(6).required(),
@@ -37,7 +39,22 @@ const doctorLoginValidation = (data) => {
     return schema.validate(data);
 }
 
+const prescriptionValidation = (data) => {
+    const schema = Joi.object({
+        id: Joi.number().required(),
+        name: Joi.string().min(6).required(),
+        user_id: Joi.number().required(),
+        doctor_id: Joi.number().required(),
+        prescriptions: Joi.array().items(Joi.object({ 
+            medicine: Joi.string().min(2).required().label('medicine'),
+            quantity: Joi.string().min(2).required().label('quantity'
+        )}))
+    });
+    return schema.validate(data);
+}
+
 module.exports.patientRegisterValidation = patientRegisterValidation;
 module.exports.patientLoginValidation = patientLoginValidation;
-module.exports.patientRegisterValidation = doctorRegisterValidation;
-module.exports.patientLoginValidation = doctorLoginValidation;
+module.exports.doctorRegisterValidation = doctorRegisterValidation;
+module.exports.doctorLoginValidation = doctorLoginValidation;
+module.exports.prescriptionValidation = prescriptionValidation;

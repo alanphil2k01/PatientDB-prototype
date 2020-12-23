@@ -2,10 +2,10 @@ const router = require('express').Router();
 const Doctor = require('../models/Doctors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {patientRegisterValidation, patientLoginValidation} = require('../validation');
+const {doctorRegisterValidation, doctorLoginValidation} = require('../validation');
 
 router.post('/register', async (req, res) => {
-    const { error } = patientRegisterValidation(req.body);
+    const { error } = doctorRegisterValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
     
     const emailExists = await Doctor.findOne({email: req.body.email});
@@ -17,6 +17,7 @@ router.post('/register', async (req, res) => {
     if(req.body.verificationCode !== process.env.DOCTOR_VERIFICATION) return res.status(400).send("Invalid Verification Code");
 
     const doctor = new Doctor({
+        id: req.body.id,
         name: req.body.name,
         email: req.body.email,
         password: hashPassword,
@@ -33,7 +34,7 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login',async (req, res) => {
-    const { error } = patientLoginValidation(req.body);
+    const { error } = doctorLoginValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
     const doctor = await Doctor.findOne({email: req.body.email});
@@ -42,7 +43,7 @@ router.post('/login',async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, doctor.password);
     if(!validPassword) return res.status(400).send("Email or Password is wrong");
 
-    const token = jwt.sign({ _id: doctor._id }, process.env.TOKEN_SECRET);
+    const token = jwt.sign({ _id: doctor._id }, process.env.TOKEN_SECRET_DOCTOR);
     res.header('auth_token', token).send(token);
 });
 

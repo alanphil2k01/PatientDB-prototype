@@ -2,6 +2,10 @@ const {boolean, bool} = require('joi');
 const mongoose = require('mongoose')
 
 const doctorSchema = new mongoose.Schema({
+    id: {
+        type: Number,
+        required: true
+    },
     name: {
         type: String,
         required: true,
@@ -35,4 +39,4 @@ const doctorSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Doctor', doctorSchema,"doctors");
+module.exports = mongoose.model('Doctor', doctorSchema,'doctors');

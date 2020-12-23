@@ -5,16 +5,15 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 
 //Import Routes
-const postRoute = require('./routes/posts')
 const authRoute = require('./routes/auth')
 const doctorAuthRoute = require('./routes/doctorAuth')
+const prescriptionRoute = require('./routes/prescriptions')
 
 //dotenv
 dotenv.config()
 
 //Create Express App
 const app = express();
-
 
 //Connect to MongoDB
 mongoose.connect(process.env.DB_CONNECT,
@@ -26,9 +25,9 @@ mongoose.connect(process.env.DB_CONNECT,
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('common'));
-app.use('/posts', postRoute);
 app.use('/api/user', authRoute);
 app.use('/api/doctor', doctorAuthRoute);
+app.use('/api/prescriptions', prescriptionRoute);
 
 //Routes
 app.get('/', (_, res) => {

@@ -15,6 +15,7 @@ router.post('/register', async (req, res) => {
     const hashPassword = await bcrypt.hash(req.body.password, salt);
 
     const user = new User({
+        id: req.body.id,
         name: req.body.name,
         email: req.body.email,
         password: hashPassword
@@ -37,7 +38,7 @@ router.post('/login',async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if(!validPassword) return res.status(400).send("Email or Password is wrong");
 
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET_USER);
     res.header('auth_token', token).send(token);
 });
 
