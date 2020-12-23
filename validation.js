@@ -53,8 +53,16 @@ const prescriptionValidation = (data) => {
     return schema.validate(data);
 }
 
+const prescriptionValidationUserID = (data) => {
+    const schema = Joi.object({
+        user_id: Joi.number().required()
+    });
+    return schema.validate(data);
+}
+
 module.exports.patientRegisterValidation = patientRegisterValidation;
 module.exports.patientLoginValidation = patientLoginValidation;
 module.exports.doctorRegisterValidation = doctorRegisterValidation;
 module.exports.doctorLoginValidation = doctorLoginValidation;
 module.exports.prescriptionValidation = prescriptionValidation;
+module.exports.prescriptionValidationUserID = prescriptionValidationUserID;

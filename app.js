@@ -3,10 +3,11 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv')
 const helmet = require('helmet')
 const morgan = require('morgan')
+const cors = require('cors')
 
 //Import Routes
-const authRoute = require('./routes/auth')
-const doctorAuthRoute = require('./routes/doctorAuth')
+const userRoute = require('./routes/user')
+const doctorRoute = require('./routes/doctor')
 const prescriptionRoute = require('./routes/prescriptions')
 
 //dotenv
@@ -23,10 +24,11 @@ mongoose.connect(process.env.DB_CONNECT,
 
 //Middlewares
 app.use(express.json());
+app.use(cors());
 app.use(helmet());
 app.use(morgan('common'));
-app.use('/api/user', authRoute);
-app.use('/api/doctor', doctorAuthRoute);
+app.use('/api/user', userRoute);
+app.use('/api/doctor', doctorRoute);
 app.use('/api/prescriptions', prescriptionRoute);
 
 //Routes
